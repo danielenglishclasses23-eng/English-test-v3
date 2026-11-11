@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Family - Extended B1+ English Proficiency Assessment</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-radio input[type="radio"]:checked + label {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .custom-radio input[type="radio"]:checked + label .radio-circle {
+            border-color: #3b82f6;
+            background-color: #3b82f6;
+        }
+        /* Custom scrollbar for text panels */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 7px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER / NAVIGATION AREA -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <!-- Brand Badge / Illustration Banner -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white font-black px-4 py-2 rounded-xl text-lg shadow-sm flex items-center space-x-2">
+                    <i class="fa-solid fa-user-group text-amber-300"></i>
+                    <span class="tracking-wide">English Family</span>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md border border-blue-200">
+                    B1+ Level Exam
+                </span>
+            </div>
+
+            <!-- Student Info Inputs -->
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                <div class="flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 w-full sm:w-auto">
+                    <i class="fa-solid fa-user text-slate-400 text-sm"></i>
+                    <input type="text" id="studentName" placeholder="Enter Student Name" 
+                           class="bg-transparent text-sm focus:outline-none w-full sm:w-48 font-medium text-slate-700 placeholder-slate-400">
+                </div>
+                <div class="flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+                    <i class="fa-solid fa-calendar-days text-slate-400 text-sm"></i>
+                    <input type="date" id="testDate" class="bg-transparent text-sm focus:outline-none font-medium text-slate-700">
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar & Navigation Tabs -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-2">
+            <!-- Overall Progress Bar -->
+            <div class="mb-3">
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-500 mb-1">
+                    <span>Overall Test Progress</span>
+                    <span id="progressText">0 / 40 Questions Answered (0%)</span>
+                </div>
+                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                    <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Tab Buttons -->
+            <nav class="flex overflow-x-auto space-x-1 sm:space-x-2 pb-2 text-sm font-medium border-b border-transparent custom-scrollbar">
+                <button onclick="switchTab(1)" id="tabBtn1" class="tab-btn px-4 py-2.5 rounded-t-lg transition flex items-center space-x-2 border-b-2 border-blue-600 text-blue-600 bg-blue-50/50">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Introduction</span>
+                </button>
+                <button onclick="switchTab(2)" id="tabBtn2" class="tab-btn px-4 py-2.5 rounded-t-lg transition flex items-center space-x-2 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Part 1: Reading I</span>
+                </button>
+                <button onclick="switchTab(3)" id="tabBtn3" class="tab-btn px-4 py-2.5 rounded-t-lg transition flex items-center space-x-2 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span>Part 2: Reading II</span>
+                </button>
+                <button onclick="switchTab(4)" id="tabBtn4" class="tab-btn px-4 py-2.5 rounded-t-lg transition flex items-center space-x-2 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-headphones"></i>
+                    <span>Part 3: Listening</span>
+                </button>
+                <button onclick="switchTab(5)" id="tabBtn5" disabled class="tab-btn px-4 py-2.5 rounded-t-lg transition flex items-center space-x-2 text-slate-400 opacity-60 cursor-not-allowed">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <span>Results & Score</span>
+                    <i id="lockIcon" class="fa-solid fa-lock text-xs ml-1"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 flex-grow w-full">
+
+        <!-- ================= PAGE 1: INTRODUCTION ================= -->
+        <section id="page1" class="page-content space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200">
+                <div class="max-w-4xl">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-bold uppercase tracking-wider">
+                            Comprehensive Assessment
+                        </span>
+                        <span class="text-xs text-slate-400">Target Level: CEFR B1+</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+                        Welcome to the B1+ English Proficiency Examination
+                    </h1>
+                    <p class="text-slate-600 leading-relaxed mb-6 text-base">
+                        This examination evaluates intermediate-advanced competencies in English text analysis, specialized vocabulary inference, contextual comprehension, and auditory processing. Please review the structure below and enter your details at the top header before beginning.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                        <div class="p-5 rounded-2xl bg-blue-50/70 border border-blue-100 flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg flex-shrink-0 shadow-sm">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-base">Part 1: Extended Reading</h3>
+                                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Extended passage (~800 words) on remote work evolution & digital nomads. Includes 15 multiple-choice questions.</p>
+                            </div>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-100 flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-lg flex-shrink-0 shadow-sm">
+                                <i class="fa-solid fa-city"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-base">Part 2: Eco-Cities Reading</h3>
+                                <p class="text-xs text-slate-600 mt-1 leading-relaxed">Extended text (~850 words) on sustainable urban development. Includes 15 multiple-choice questions.</p>
+                            </div>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-100 flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-lg flex-shrink-0 shadow-sm">
+                                <i class="fa-solid fa-headphones"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-base">Part 3: Route 66 Listening</h3>
+                                <p class="text-xs text-slate-600 mt-1 leading-relaxed">5-minute American English narration detailing a family's road trip. Includes 10 comprehension questions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 text-white p-6 rounded-2xl mb-8 space-y-3 shadow-md">
+                        <h4 class="font-bold text-amber-400 text-base flex items-center">
+                            <i class="fa-solid fa-triangle-exclamation mr-2"></i> Examination Guidelines:
+                        </h4>
+                        <ul class="text-xs sm:text-sm text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                            <li><strong>Navigation:</strong> You can navigate freely between Parts 1, 2, and 3 using the tabs above to double-check or revise your answers.</li>
+                            <li><strong>Unlocking Results:</strong> The <strong>Results & Score Tab</strong> unlocks automatically once all 40 questions are answered.</li>
+                            <li><strong>Submission:</strong> On the final page, you can generate a direct email submission to <span class="text-amber-300 font-mono">Danielenglishclasses23@gmail.com</span> or copy a formatted answer code snippet.</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="switchTab(2)" class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition flex items-center space-x-3 text-base">
+                        <span>Start Reading Part 1</span>
+                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: READING COMPREHENSION PART 1 ================= -->
+        <section id="page2" class="page-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Reading Text Column -->
+                <div class="lg:col-span-6 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 h-fit lg:sticky lg:top-24">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">Reading Passage 1</span>
+                        <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-clock mr-1"></i> ~850 words</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-4">The Evolution of Remote Work and the Global Digital Nomad Movement</h2>
+                    
+                    <div class="prose prose-slate text-sm sm:text-base leading-relaxed space-y-4 text-slate-700 max-h-[72vh] overflow-y-auto pr-3 custom-scrollbar border-t pt-4">
+                        <p>Over the past two decades, the traditional paradigm of the 9-to-5 office job has experienced an unprecedented seismic shift. Driven by exponential developments in cloud computing, high-speed mobile telecommunications, and collaborative software, remote work has evolved from an occasional corporate luxury into a mainstream operational model across globally connected industries.</p>
+                        
+                        <p>In the early 2000s, telecommuting was largely restricted to specialized software engineers and freelance creative writers. However, the rapid global expansion of fiber-optic networks and mobile broadband democratized digital infrastructure. Companies soon realized that geographical location was no longer an insurmountable barrier to hiring top-tier talent. This realization paved the way for the rise of "digital nomads"—professionals who leverage technology to work remotely while traveling internationally or living in non-native countries.</p>
+
+                        <p>For employees, the benefits of remote work are substantial and well-documented. Eliminating lengthy daily commutes saves hundreds of hours annually, reducing physical exhaustion and lowering carbon footprints. Furthermore, remote workers report significantly higher levels of personal autonomy, allowing them to structure work schedules around peak productivity hours rather than arbitrary clock-in times. Parents and caregivers particularly value the flexibility to attend to domestic duties without sacrificing professional ambition.</p>
+
+                        <p>Nevertheless, this shift presents complex psychological and organizational challenges. Without clear boundaries between professional tasks and home life, many remote employees experience chronic overwork. The psychological burden of "always-on" digital communication can result in severe fatigue and emotional burnout. Additionally, the lack of face-to-face interactions within physical offices often diminishes spontaneous creative brainstorming and weakens organizational culture. Virtual meeting platforms, while effective for scheduled agendas, rarely replicate the informal "watercooler" conversations where innovation frequently ignites.</p>
+
+                        <p>From an economic standpoint, the influx of digital nomads into popular destinations across Southeast Asia, Southern Europe, and Latin America has created a dual impact. While international remote workers inject substantial foreign capital into local coffee shops, co-working spaces, and short-term rentals, their presence can inadvertently drive up regional housing prices. Locals in popular hub cities often find themselves priced out of historic neighborhoods due to the escalation of short-term tourist leases aimed at high-earning foreign nomads.</p>
+
+                        <p>To address these challenges, forward-thinking corporate leaders and municipal policymakers are formulating innovative frameworks. Corporations are increasingly turning toward "hybrid work models," which blend mandatory monthly in-person team retreats with regular work-from-home flexibility. Concurrently, nations like Portugal, Costa Rica, and Indonesia have introduced specialized "Digital Nomad Visas." These legal visas allow remote workers to reside legally for extended periods while contributing to local revenue through consumption taxes, striking a healthier equilibrium between international mobility and community stability.</p>
+
+                        <p>Ultimately, the remote work revolution represents far more than a temporary trend; it is a fundamental restructuring of human labor and geographic mobility. As artificial intelligence and virtual collaboration tools continue to mature, the distinction between local and global workforces will blur even further, requiring workers and organizations alike to cultivate adaptability, emotional resilience, and lifelong learning skills.</p>
+                    </div>
+                </div>
+
+                <!-- Questions Column -->
+                <div class="lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                    <div class="flex items-center justify-between border-b pb-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900">Questions 1 to 15</h2>
+                            <p class="text-xs text-slate-500">Select the single best answer based on Passage 1.</p>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-full">Part 1</span>
+                    </div>
+                    <div id="reading1Container" class="space-y-6"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: READING COMPREHENSION PART 2 ================= -->
+        <section id="page3" class="page-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Reading Text Column -->
+                <div class="lg:col-span-6 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 h-fit lg:sticky lg:top-24">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">Reading Passage 2</span>
+                        <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-clock mr-1"></i> ~880 words</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-4">Sustainable Urban Living and the Rise of Modern Eco-Cities</h2>
+                    
+                    <div class="prose prose-slate text-sm sm:text-base leading-relaxed space-y-4 text-slate-700 max-h-[72vh] overflow-y-auto pr-3 custom-scrollbar border-t pt-4">
+                        <p>By the middle of the 21st century, demographers project that nearly 70 percent of the world’s human population will reside in urban metropolises. While cities serve as engines of economic growth and cultural exchange, they currently account for over 70 percent of global carbon emissions and consume vast quantities of natural resources. In response to pressing environmental concerns, urban planners, architects, and environmental scientists are pioneering the concept of "sustainable eco-cities."</p>
+
+                        <p>At the core of eco-city design is the philosophy of circular urban metabolism. Traditional industrial cities operate on a linear model: raw resources are imported, consumed, and discarded as waste and pollution. In contrast, sustainable urban centers aim to close resource loops by recycling wastewater, converting organic trash into clean biogas, and integrating circular construction materials that can be reused rather than sent to landfills.</p>
+
+                        <p>Architectural innovation plays a decisive role in this green transition. Modern passive buildings are engineered with high-performance insulation, double-glazed smart windows, and strategic orientation to maximize natural sunlight, drastically reducing reliance on artificial heating and air conditioning. Rooftop photovoltaic solar panel arrays combined with localized geothermal heat pumps enable many new residential complexes to operate as "net-positive energy buildings," producing more electricity than they consume over the calendar year.</p>
+
+                        <p>Moreover, modern architects are re-integrating nature directly into urban infrastructure through vertical forests and biodiverse rooftop gardens. High-rise residential towers covered with thousands of trees and shrubs help absorb atmospheric carbon dioxide, filter particulate matter, and combat the notorious "urban heat island effect"—a phenomenon where concrete and asphalt absorb solar radiation, causing urban temperatures to spike significantly higher than surrounding rural landscapes.</p>
+
+                        <p>Transportation infrastructure is undergoing an equally radical transformation. Sustainable urban planning prioritizes the "15-minute city" concept, an arrangement where residents can access daily necessities—schools, grocery stores, healthcare, and parks—within a short 15-minute walk or bicycle ride from their doorsteps. High-occupancy lanes, zero-emission electric bus fleets, and protected bike highways discourage personal automobile ownership, eliminating urban traffic congestion and sharply cutting dangerous emissions.</p>
+
+                        <p>Despite these impressive technical achievements, socio-economic equity remains a major hurdle in eco-city implementation. Critics point out that green architectural developments often cater to high-income buyers, creating insulated pockets of luxury eco-living while working-class neighborhoods remain vulnerable to industrial pollution and inadequate public transit. True urban sustainability cannot be achieved solely through high-tech engineering; it requires inclusive zoning policies that ensure affordable green housing for all demographics.</p>
+
+                        <p>Ultimately, transforming concrete jungles into ecological hubs demands a harmonized effort between forward-thinking policy, technological investment, and conscious citizen behavior. When public commitment aligns with sustainable engineering, cities can transform from environmental burdens into vibrant beacons of ecological restoration.</p>
+                    </div>
+                </div>
+
+                <!-- Questions Column -->
+                <div class="lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                    <div class="flex items-center justify-between border-b pb-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900">Questions 16 to 30</h2>
+                            <p class="text-xs text-slate-500">Select the single best answer based on Passage 2.</p>
+                        </div>
+                        <span class="text-xs bg-indigo-100 text-indigo-800 font-bold px-3 py-1 rounded-full">Part 2</span>
+                    </div>
+                    <div id="reading2Container" class="space-y-6"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: LISTENING PRACTICE ================= -->
+        <section id="page4" class="page-content hidden space-y-6">
+            <!-- Audio Player Card -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Audio Track (~5 Min)</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-2">An American Family's Road Trip Across Historic Route 66</h2>
+                        <p class="text-xs text-slate-500 mt-1">Listen to the American English narration detailing the Johnson family's journey from Chicago to California.</p>
+                    </div>
+
+                    <!-- Audio Controls -->
+                    <div class="flex items-center space-x-3 bg-slate-100 p-2.5 rounded-2xl w-full md:w-auto justify-center border border-slate-200">
+                        <button id="playBtn" onclick="togglePlayAudio()" class="w-12 h-12 bg-amber-500 hover:bg-amber-600 text-white rounded-xl flex items-center justify-center shadow-md transition">
+                            <i id="playIcon" class="fa-solid fa-play text-lg"></i>
+                        </button>
+                        <button onclick="stopAudio()" class="w-12 h-12 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl flex items-center justify-center transition">
+                            <i class="fa-solid fa-stop text-lg"></i>
+                        </button>
+
+                        <div class="flex items-center space-x-2 px-3 border-l border-slate-300">
+                            <i class="fa-solid fa-gauge text-slate-500 text-xs"></i>
+                            <select id="speedSelect" onchange="changeSpeed()" class="bg-transparent text-xs font-bold text-slate-700 focus:outline-none">
+                                <option value="0.9">0.9x Speed</option>
+                                <option value="1.0" selected>1.0x Speed</option>
+                                <option value="1.1">1.1x Speed</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Visualizer / Status Bar -->
+                <div class="bg-slate-900 text-white p-4 rounded-xl flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div id="audioWave" class="flex items-end space-x-1 h-5">
+                            <span class="w-1 bg-amber-400 h-2 rounded-full"></span>
+                            <span class="w-1 bg-amber-400 h-4 rounded-full"></span>
+                            <span class="w-1 bg-amber-400 h-3 rounded-full"></span>
+                            <span class="w-1 bg-amber-400 h-5 rounded-full"></span>
+                        </div>
+                        <span id="audioStatus" class="text-xs font-mono text-slate-300">Ready to play (~5 min audio narration)</span>
+                    </div>
+
+                    <button onclick="toggleTranscript()" class="text-xs text-amber-400 hover:text-amber-300 font-semibold flex items-center space-x-1">
+                        <i class="fa-solid fa-file-lines mr-1"></i>
+                        <span id="transcriptToggleText">Show Transcript</span>
+                    </button>
+                </div>
+
+                <!-- Script Drawer -->
+                <div id="transcriptBox" class="hidden mt-4 bg-slate-50 p-5 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-3 max-h-56 overflow-y-auto custom-scrollbar">
+                    <p class="font-bold text-slate-800 text-sm border-b pb-2">Audio Narration Script:</p>
+                    <p id="audioScriptContent" class="leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                <div class="flex items-center justify-between border-b pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Questions 31 to 40</h2>
+                        <p class="text-xs text-slate-500">Answer based on the Route 66 listening narration.</p>
+                    </div>
+                    <span class="text-xs bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded-full">Part 3</span>
+                </div>
+                <div id="listeningContainer" class="space-y-6"></div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: RESULTS & SCORE SUMMARY (LOCKED INITIALLY) ================= -->
+        <section id="page5" class="page-content hidden space-y-6">
+            <!-- Score Card -->
+            <div class="bg-gradient-to-r from-blue-700 via-indigo-800 to-slate-900 text-white p-6 sm:p-8 rounded-2xl shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <span class="text-xs uppercase font-bold tracking-widest text-blue-200 bg-blue-900/60 px-3 py-1 rounded-md border border-blue-400/30">Official Assessment Summary</span>
+                    <h2 id="summaryStudentName" class="text-2xl font-extrabold mt-3">Student: --</h2>
+                    <p id="summaryDate" class="text-xs text-blue-200 mt-1">Date: --</p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md px-8 py-5 rounded-2xl border border-white/20 text-center shadow-inner">
+                    <span class="text-xs uppercase font-semibold text-blue-100 block">Overall Score</span>
+                    <span id="scoreDisplay" class="text-4xl font-black text-amber-300">0 / 40</span>
+                    <span id="percentageDisplay" class="text-xs font-semibold text-blue-100 block mt-1">(0%)</span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <button onclick="sendEmailAnswers()" class="px-5 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Send to Teacher</span>
+                    </button>
+                    <button onclick="copyCompactSummary()" class="px-5 py-3.5 bg-white text-slate-900 hover:bg-slate-100 text-sm font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-copy text-blue-600"></i>
+                        <span>Copy Compact Summary</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answers Review Grid -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="text-lg font-bold text-slate-900 mb-4 border-b pb-3 flex items-center justify-between">
+                    <span>Detailed Answer Key & Evaluation Breakdown</span>
+                    <span class="text-xs text-slate-500 font-normal">✔️ Correct | ❌ Incorrect</span>
+                </h3>
+
+                <div id="resultsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+                    <!-- Dynamic Answer Cards -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-8">
+        <p>&copy; English Family Educational Platform. Designed for B1+ Intermediate Standard Evaluations.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ================= EXAM DATA ================= */
+        const reading1Questions = [
+            { id: 1, q: "What primary factors triggered the remote work transformation over the past two decades?", options: ["Strict new international labor treaties", "Exponential developments in cloud computing and high-speed broadband", "Massive drops in corporate tax rates worldwide", "Decreased availability of office furniture"], ans: 1 },
+            { id: 2, q: "In the early 2000s, telecommuting was predominantly restricted to:", options: ["Executive corporate managers", "Software engineers and freelance writers", "Hospital nurses and doctors", "Retail sales representatives"], ans: 1 },
+            { id: 3, q: "The term 'digital nomads' refers to professionals who:", options: ["Work exclusively for non-profit charities", "Use technology to work remotely while traveling internationally", "Build mobile cell towers in rural areas", "Operate traditional brick-and-mortar storefronts"], ans: 1 },
+            { id: 4, q: "According to the passage, skipping daily commutes directly benefits workers by:", options: ["Eliminating personal tax obligations", "Saving hundreds of hours annually and lowering carbon footprints", "Guaranteeing double salary bonuses", "Reducing their need for home internet"], ans: 1 },
+            { id: 5, q: "Why do parents and caregivers particularly appreciate remote work?", options: ["It provides free childcare services", "It allows flexibility for domestic duties without sacrificing career ambition", "It eliminates domestic household chores completely", "It reduces their reliance on mobile phones"], ans: 1 },
+            { id: 6, q: "What psychological danger is highlighted regarding the lack of work-life boundaries?", options: ["Loss of basic mathematical skills", "Chronic overwork and emotional burnout from being 'always-on'", "Complete fear of public speaking", "Increased addiction to physical office desks"], ans: 1 },
+            { id: 7, q: "Why are virtual meeting platforms insufficient for full creative innovation?", options: ["They disconnect audio every ten minutes", "They rarely replicate informal 'watercooler' spontaneous conversations", "They cost too much money for employees", "They cannot display presentation slides"], ans: 1 },
+            { id: 8, q: "What negative housing impact can occur in popular digital nomad destination cities?", options: ["Excessive empty housing construction", "Short-term tourist leases driving up housing costs for local residents", "Demolition of historic downtown landmarks", "Immediate reduction in local property taxes"], ans: 1 },
+            { id: 9, q: "What is a 'hybrid work model' as described in the passage?", options: ["Working 100% of the time from a moving vehicle", "Combining mandatory monthly team retreats with work-from-home days", "Working four different jobs simultaneously", "Splitting shifts between day and night"], ans: 1 },
+            { id: 10, q: "Nations like Portugal and Costa Rica created 'Digital Nomad Visas' in order to:", options: ["Prevent foreigners from visiting local coffee shops", "Allow remote workers to reside legally while contributing to consumption taxes", "Ban foreign workers from using high-speed internet", "Force nomads to join local military services"], ans: 1 },
+            { id: 11, q: "The word 'seismic' in paragraph 1 is closest in meaning to:", options: ["Minor", "Dramatic / Massive", "Predictable", "Gradual"], ans: 1 },
+            { id: 12, q: "The word 'insurmountable' in paragraph 2 means:", options: ["Impossible to overcome", "Easy to solve", "Extremely cheap", "Temporary"], ans: 0 },
+            { id: 13, q: "What positive economic effect do digital nomads bring to local destination towns?", options: ["They build free public highways", "They inject foreign capital into cafes, co-working spaces, and rentals", "They pay all municipal debt directly", "They reduce local food prices"], ans: 1 },
+            { id: 14, q: "What future development will blur local and global workforces even further?", options: ["The re-introduction of paper filing systems", "Maturing AI and virtual collaboration tools", "Decreasing global travel options", "Higher international postal rates"], ans: 1 },
+            { id: 15, q: "What is the central theme of Reading Passage 1?", options: ["The technical assembly of fiber-optic cables", "The widespread revolution of remote work, its benefits, and socio-economic challenges", "A tourist guide to visiting Southern Europe", "How to apply for traditional corporate management"], ans: 1 }
+        ];
+
+        const reading2Questions = [
+            { id: 16, q: "By mid-century, demographers estimate that what percentage of the global population will live in cities?", options: ["Around 30 percent", "Nearly 70 percent", "Exactly 90 percent", "Under 50 percent"], ans: 1 },
+            { id: 17, q: "Despite being economic engines, cities currently account for over what percentage of global carbon emissions?", options: ["20 percent", "50 percent", "70 percent", "95 percent"], ans: 2 },
+            { id: 18, q: "What is the primary difference between linear and circular urban metabolism?", options: ["Linear systems recycle everything, while circular systems dump waste", "Linear systems discard resources as waste, while circular systems recycle water and waste into energy", "Circular systems rely exclusively on coal power", "Linear systems use zero natural resources"], ans: 1 },
+            { id: 19, q: "How do passive building designs minimize artificial heating and cooling needs?", options: ["By removing all glass windows", "Through high-performance insulation, double-glazed smart windows, and strategic solar orientation", "By installing thick iron shutters", "By operating large diesel generators inside walls"], ans: 1 },
+            { id: 20, q: "A 'net-positive energy building' is defined as one that:", options: ["Consumes double the energy of normal buildings", "Produces more electricity than it consumes over the year", "Has no electrical wiring installed", "Generates electricity only during winter months"], ans: 1 },
+            { id: 21, q: "What causes the 'urban heat island effect' in conventional cities?", options: ["Overuse of residential solar panels", "Concrete and asphalt absorbing solar radiation and spiking city temperatures", "Planting too many vertical forests", "Cold ocean currents hitting city harbor walls"], ans: 1 },
+            { id: 22, q: "How do vertical forests on high-rise buildings help local urban environments?", options: ["They provide timber for local factories", "They absorb CO2, filter air pollutants, and cool urban heat", "They increase municipal water bills", "They prevent sunlight from entering buildings"], ans: 1 },
+            { id: 23, q: "What is the key principle behind the '15-minute city' urban planning concept?", options: ["Subway trains must arrive every 15 minutes", "Residents can reach daily necessities within a 15-minute walk or bike ride", "Citizens are only allowed outside for 15 minutes daily", "Car parking is free for the first 15 minutes"], ans: 1 },
+            { id: 24, q: "What major socio-economic criticism is leveled against modern eco-city projects?", options: ["They do not use modern architecture", "Green developments often cater to high-income buyers, risking social inequality", "They increase traffic congestion drastically", "They produce too much renewable solar power"], ans: 1 },
+            { id: 25, q: "Achieving true urban sustainability requires combining technical engineering with:", options: ["Higher toll fees on highways", "Inclusive zoning policies and conscious citizen behavioral shifts", "Banning public transportation completely", "Building larger city landfills"], ans: 1 },
+            { id: 26, q: "The word 'metabolism' in paragraph 2 refers to how a city:", options: ["Processes and recycles its resources and energy", "Calculates its financial budget", "Elects its local mayor", "Constructs highway overpasses"], ans: 0 },
+            { id: 27, q: "The word 'hurdle' in paragraph 6 is closest in meaning to:", options: ["Advantage", "Obstacle / Challenge", "Solution", "Reward"], ans: 1 },
+            { id: 28, q: "Which public transportation initiatives are recommended to reduce automobile reliance?", options: ["Expanding highway lanes", "Zero-emission electric buses and protected bicycle highways", "Lowering fuel taxes on private trucks", "Closing suburban train stations"], ans: 1 },
+            { id: 29, q: "What happens to organic waste in a circular urban ecosystem?", options: ["It is burned in open street fires", "It is converted into clean biogas energy and fertilizer", "It is shipped to other countries on ships", "It is buried under parking garages"], ans: 1 },
+            { id: 30, q: "What is the main topic of Reading Passage 2?", options: ["The economic history of ancient agricultural villages", "Sustainable urban design, eco-cities, and green infrastructural solutions", "How to install home solar panel batteries", "Automobile manufacturing trends"], ans: 1 }
+        ];
+
+        const listeningQuestions = [
+            { id: 31, q: "Where did the Johnson family begin their historic Route 66 road trip?", options: ["Los Angeles, California", "Chicago, Illinois", "St. Louis, Missouri", "Albuquerque, New Mexico"], ans: 1 },
+            { id: 32, q: "How many members of the Johnson family participated in the trip?", options: ["Two members", "Four members (parents David & Elena, and kids Sam & Chloe)", "Six members", "Three members"], ans: 1 },
+            { id: 33, q: "What was the final destination point of their cross-country drive?", options: ["The Grand Canyon", "Santa Monica Pier in California", "Las Vegas, Nevada", "Dallas, Texas"], ans: 1 },
+            { id: 34, q: "What classic vehicle did David restore for this special road trip?", options: ["A 1968 Chevy station wagon", "A modern electric sports car", "A large motorhome RV", "A yellow school bus"], ans: 0 },
+            { id: 35, q: "Why is Route 66 historically famous in American culture?", options: ["It was the first high-speed bullet train track", "It connected the Midwest to the West Coast, symbolizing freedom and discovery", "It was built entirely by military soldiers", "It is the longest highway in the world"], ans: 1 },
+            { id: 36, q: "Which landmark state park did the family visit while driving through Missouri?", options: ["Yosemite National Park", "Meramec Caverns", "Yellowstone Park", "Everglades Reserve"], ans: 1 },
+            { id: 37, q: "How did the teenagers, Sam and Chloe, react when cellphone service dropped in desert areas?", options: ["They demanded to fly home immediately", "They put away screens and played classic road games while admiring scenery", "They fell asleep for three days straight", "They complained constantly to their parents"], ans: 1 },
+            { id: 38, q: "What iconic Texas diner tradition did the family experience in Amarillo?", options: ["Eating seafood by the harbor", "Sampling famous steaks and retro milkshakes at a classic roadside diner", "Baking fresh sourdough bread", "Drinking traditional sweet tea in the desert"], ans: 1 },
+            { id: 39, q: "What natural wonder left the family speechless as they traversed Arizona?", options: ["Niagara Falls", "The breathtaking vistas of the Grand Canyon", "Death Valley sand dunes", "Mount Rainier"], ans: 1 },
+            { id: 40, q: "What key takeaway did Elena share at the end of their 2,400-mile journey?", options: ["Driving long distances is too expensive", "The true magic of travel lies in shared moments and connections along the way", "Hotels should always be booked two years in advance", "Route 66 should be converted into a train track"], ans: 1 }
+        ];
+
+        const listeningScriptText = `Welcome to this B1+ English listening exercise! Today, we follow the story of the Johnson family—David, Elena, and their two teenage children, Sam and Chloe—as they embark on an iconic American adventure: driving across historic Route 66. 
+
+Known affectionally as the 'Mother Road,' Route 66 spans over 2,400 miles from the windy city of Chicago, Illinois, all the way to the sunny shores of Santa Monica, California. For decades, this highway represented the ultimate symbol of American freedom, economic mobility, and cross-country discovery.
+
+For over two years, David had meticulously restored a vintage 1968 Chevrolet station wagon in their garage. Last July, with suitcases packed and a camera ready, the family set off from downtown Chicago. Their goal was not to rush along fast modern interstate highways, but rather to travel slowly along the preserved two-lane sections of old Route 66.
+
+Their first major stop was in Missouri, where they explored the underground wonders of Meramec Caverns—a historic cave system once used as a hideout by famous outlaws. As they drove through Oklahoma and the vast plains of Texas, the scenery changed dramatically. In Amarillo, Texas, they pulled over at a legendary retro roadside diner to enjoy classic American burgers, thick chocolate milkshakes, and homemade pecan pie.
+
+As they crossed into New Mexico and Arizona, the vast desert landscapes unfolded before them. Whenever cellular service dropped between remote desert towns, Sam and Chloe set aside their smartphones. Instead of staring at digital screens, they looked out the windows, played classic road-trip trivia games, and marveled at red rock formations. In Arizona, they took a minor detour north to stand at the rim of the Grand Canyon—an awe-inspiring natural wonder that left the entire family silent in admiration.
+
+After twelve days of travel, vintage neon signs, and friendly encounters with small-town store owners, the classic station wagon finally rolled onto Santa Monica Pier in California. Standing near the famous sign marking the end of the trail, Elena reflected on their journey. She noted that while the final destination was spectacular, the true magic of Route 66 lay in the slow, meaningful conversations, shared laughter, and genuine connections made along the open road.`;
+
+        // Combine all questions for master index
+        const allQuestions = [...reading1Questions, ...reading2Questions, ...listeningQuestions];
+        const studentAnswers = {};
+
+        /* ================= INITIALIZATION ================= */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auto-fill today's date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('testDate').value = today;
+
+            // Render Questions
+            renderQuestions(reading1Questions, 'reading1Container');
+            renderQuestions(reading2Questions, 'reading2Container');
+            renderQuestions(listeningQuestions, 'listeningContainer');
+
+            // Populate Audio Script
+            document.getElementById('audioScriptContent').innerText = listeningScriptText;
+
+            // Initialize Speech API
+            initSpeechSynthesis();
+        });
+
+        /* ================= NAVIGATION & TAB SWITCHING ================= */
+        function switchTab(pageNum) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+
+            // Show selected page
+            document.getElementById(`page${pageNum}`).classList.remove('hidden');
+
+            // Update tab styles
+            document.querySelectorAll('.tab-btn').forEach((btn, index) => {
+                if (index + 1 === pageNum) {
+                    btn.className = "tab-btn px-4 py-2.5 rounded-t-lg transition flex items-center space-x-2 border-b-2 border-blue-600 text-blue-600 bg-blue-50/50 font-semibold";
+                } else if (index + 1 === 5 && isResultsLocked()) {
+                    btn.className = "tab-btn px-4 py-2.5 rounded-t-lg transition flex items-center space-x-2 text-slate-400 opacity-60 cursor-not-allowed font-medium";
+                } else {
+                    btn.className = "tab-btn px-4 py-2.5 rounded-t-lg transition flex items-center space-x-2 text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium";
+                }
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function isResultsLocked() {
+            return Object.keys(studentAnswers).length < 40;
+        }
+
+        /* ================= RENDER QUESTION CARDS ================= */
+        function renderQuestions(questionList, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            questionList.forEach(q => {
+                const card = document.createElement('div');
+                card.className = "p-4 sm:p-5 rounded-xl border border-slate-200 bg-slate-50/60 space-y-3 hover:border-slate-300 transition";
+                
+                const labels = ['A', 'B', 'C', 'D'];
+                let optionsHtml = '';
+
+                q.options.forEach((opt, idx) => {
+                    optionsHtml += `
+                        <div class="custom-radio">
+                            <input type="radio" id="q${q.id}_opt${idx}" name="q_${q.id}" value="${idx}" 
+                                   onchange="recordAnswer(${q.id}, ${idx})" class="hidden">
+                            <label for="q${q.id}_opt${idx}" class="flex items-center p-3 bg-white rounded-xl border border-slate-200 cursor-pointer hover:border-slate-300 transition text-sm">
+                                <span class="radio-circle w-4 h-4 rounded-full border border-slate-300 mr-3 flex items-center justify-center flex-shrink-0 transition"></span>
+                                <span class="font-bold text-slate-500 mr-2">${labels[idx]}.</span>
+                                <span class="text-slate-700">${opt}</span>
+                            </label>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <span class="font-bold text-blue-600 text-xs uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded">Question ${q.id}</span>
+                    </div>
+                    <p class="text-slate-900 text-sm font-semibold leading-snug">${q.q}</p>
+                    <div class="grid grid-cols-1 gap-2 pt-1">
+                        ${optionsHtml}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        /* ================= RECORD & PROGRESS LOGIC ================= */
+        function recordAnswer(qId, selectedIdx) {
+            studentAnswers[qId] = selectedIdx;
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const total = 40;
+            const answeredCount = Object.keys(studentAnswers).length;
+            const percentage = Math.round((answeredCount / total) * 100);
+
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('progressText').innerText = `${answeredCount} / ${total} Questions Answered (${percentage}%)`;
+
+            // Check if all 40 questions are answered to unlock Page 5
+            const page5Btn = document.getElementById('tabBtn5');
+            const lockIcon = document.getElementById('lockIcon');
+
+            if (answeredCount === total) {
+                page5Btn.disabled = false;
+                page5Btn.classList.remove('opacity-60', 'cursor-not-allowed', 'text-slate-400');
+                page5Btn.classList.add('text-slate-700', 'hover:text-blue-600', 'hover:bg-slate-100');
+                if (lockIcon) lockIcon.className = "fa-solid fa-lock-open text-xs ml-1 text-emerald-500";
+
+                // Calculate & render results
+                calculateAndRenderResults();
+            }
+        }
+
+        /* ================= AUDIO & SPEECH SYNTHESIS ================= */
+        let synth = window.speechSynthesis;
+        let utterance = null;
+        let isPlaying = false;
+
+        function initSpeechSynthesis() {
+            if ('speechSynthesis' in window) {
+                utterance = new SpeechSynthesisUtterance(listeningScriptText);
+                utterance.lang = 'en-US';
+                
+                setTimeout(() => {
+                    let voices = synth.getVoices();
+                    let usVoice = voices.find(v => v.lang.includes('en-US') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('David')));
+                    if (usVoice) utterance.voice = usVoice;
+                }, 500);
+
+                utterance.onend = function() {
+                    isPlaying = false;
+                    document.getElementById('playIcon').className = "fa-solid fa-play text-lg";
+                    document.getElementById('audioStatus').innerText = "Finished playing audio track.";
+                };
+            }
+        }
+
+        function togglePlayAudio() {
+            if (!synth) {
+                alert("Speech Synthesis is not supported in your browser.");
+                return;
+            }
+
+            if (isPlaying) {
+                synth.pause();
+                isPlaying = false;
+                document.getElementById('playIcon').className = "fa-solid fa-play text-lg";
+                document.getElementById('audioStatus').innerText = "Paused audio narration.";
+            } else {
+                if (synth.paused) {
+                    synth.resume();
+                } else {
+                    synth.cancel();
+                    const speed = parseFloat(document.getElementById('speedSelect').value);
+                    utterance.rate = speed;
+                    synth.speak(utterance);
+                }
+                isPlaying = true;
+                document.getElementById('playIcon').className = "fa-solid fa-pause text-lg";
+                document.getElementById('audioStatus').innerText = "Playing American English Narration...";
+            }
+        }
+
+        function stopAudio() {
+            if (synth) {
+                synth.cancel();
+                isPlaying = false;
+                document.getElementById('playIcon').className = "fa-solid fa-play text-lg";
+                document.getElementById('audioStatus').innerText = "Audio stopped. Ready to play.";
+            }
+        }
+
+        function changeSpeed() {
+            if (isPlaying) {
+                stopAudio();
+                togglePlayAudio();
+            }
+        }
+
+        function toggleTranscript() {
+            const box = document.getElementById('transcriptBox');
+            const toggleText = document.getElementById('transcriptToggleText');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                toggleText.innerText = "Hide Transcript";
+            } else {
+                box.classList.add('hidden');
+                toggleText.innerText = "Show Transcript";
+            }
+        }
+
+        /* ================= RESULTS & EVALUATION ================= */
+        let scoreCount = 0;
+
+        function calculateAndRenderResults() {
+            scoreCount = 0;
+            const resultsContainer = document.getElementById('resultsList');
+            resultsContainer.innerHTML = '';
+
+            const studentName = document.getElementById('studentName').value.trim() || "Anonymous Student";
+            const dateVal = document.getElementById('testDate').value;
+
+            document.getElementById('summaryStudentName').innerText = `Student: ${studentName}`;
+            document.getElementById('summaryDate').innerText = `Date: ${dateVal}`;
+
+            const labels = ['A', 'B', 'C', 'D'];
+
+            allQuestions.forEach(q => {
+                const userAnsIdx = studentAnswers[q.id];
+                const isCorrect = userAnsIdx === q.ans;
+                if (isCorrect) scoreCount++;
+
+                const userLetter = userAnsIdx !== undefined ? labels[userAnsIdx] : '-';
+                const correctLetter = labels[q.ans];
+
+                const resultCard = document.createElement('div');
+                resultCard.className = `p-3 rounded-xl border flex items-center justify-between text-xs font-semibold ${
+                    isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'
+                }`;
+
+                resultCard.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-6 h-6 rounded-full ${isCorrect ? 'bg-emerald-500' : 'bg-rose-500'} text-white flex items-center justify-center font-bold text-[10px]">
+                            ${q.id}
+                        </span>
+                        <span>Your: <strong class="text-sm">${userLetter}</strong></span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        ${!isCorrect ? `<span class="text-slate-500 font-normal">Correct: <strong>${correctLetter}</strong></span>` : ''}
+                        <span class="text-base">${isCorrect ? '✔️' : '❌'}</span>
+                    </div>
+                `;
+
+                resultsContainer.appendChild(resultCard);
+            });
+
+            const total = 40;
+            const percentage = Math.round((scoreCount / total) * 100);
+            document.getElementById('scoreDisplay').innerText = `${scoreCount} / ${total}`;
+            document.getElementById('percentageDisplay').innerText = `(${percentage}% Score)`;
+        }
+
+        /* ================= SUBMISSION HANDLERS ================= */
+        function sendEmailAnswers() {
+            const studentName = document.getElementById('studentName').value.trim() || "Anonymous Student";
+            const dateVal = document.getElementById('testDate').value;
+            const labels = ['A', 'B', 'C', 'D'];
+
+            let bodyText = `B1+ ENGLISH ASSESSMENT RESULTS%0D%0A`;
+            bodyText += `==============================%0D%0A`;
+            bodyText += `Student: ${encodeURIComponent(studentName)}%0D%0A`;
+            bodyText += `Date: ${dateVal}%0D%0A`;
+            bodyText += `Total Score: ${scoreCount} / 40 (${Math.round((scoreCount/40)*100)}%)%0D%0A`;
+            bodyText += `==============================%0D%0A%0D%0A`;
+            bodyText += `ANSWER BREAKDOWN:%0D%0A`;
+
+            allQuestions.forEach(q => {
+                const userAnsIdx = studentAnswers[q.id];
+                const isCorrect = userAnsIdx === q.ans;
+                const userLetter = userAnsIdx !== undefined ? labels[userAnsIdx] : '-';
+                const symbol = isCorrect ? '✔️' : '❌';
+                const correctInfo = isCorrect ? '' : ` (Correct: ${labels[q.ans]})`;
+                
+                bodyText += `Q${q.id}: ${userLetter} ${symbol}${correctInfo}%0D%0A`;
+            });
+
+            const emailTarget = "Danielenglishclasses23@gmail.com";
+            const subject = encodeURIComponent(`B1+ Test Answers - ${studentName}`);
+            
+            window.location.href = `mailto:${emailTarget}?subject=${subject}&body=${bodyText}`;
+        }
+
+        function copyCompactSummary() {
+            const studentName = document.getElementById('studentName').value.trim() || "Anonymous Student";
+            const labels = ['A', 'B', 'C', 'D'];
+
+            let compactStr = `Student: ${studentName} | Score: ${scoreCount}/40 (${Math.round((scoreCount/40)*100)}%)\n`;
+            compactStr += `--------------------------------------------------\n`;
+
+            allQuestions.forEach(q => {
+                const userAnsIdx = studentAnswers[q.id];
+                const isCorrect = userAnsIdx === q.ans;
+                const userLetter = userAnsIdx !== undefined ? labels[userAnsIdx] : '-';
+                const symbol = isCorrect ? '✔️' : '❌';
+
+                compactStr += `Q${q.id}: ${userLetter} ${symbol}  `;
+                if (q.id % 5 === 0) compactStr += `\n`;
+            });
+
+            const textArea = document.createElement("textarea");
+            textArea.value = compactStr;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert("Compact answer summary copied to clipboard!");
+            } catch (err) {
+                alert("Unable to copy to clipboard automatically.");
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>
